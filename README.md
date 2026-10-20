@@ -1,88 +1,94 @@
 <p align="center">
-  <img src="assets/icon.png" width="160" alt="Prompter simgesi">
+  <img src="assets/icon.png" width="160" alt="Prompter icon">
 </p>
 
 <h1 align="center">Prompter</h1>
 
 <p align="center">
-  Kameranın hemen altında duran, macOS için sade ve hafif bir teleprompter.
+  A minimal, lightweight teleprompter for macOS that sits right under your webcam.
+</p>
+
+<p align="center">
+  <b>English</b> · <a href="README.tr.md">Türkçe</a>
 </p>
 
 ---
 
-Kamerayla kayıt alırken metni okumak için yapıldı. Pencere ekranın üst ortasında, kameranın hemen altında açılır ve diğer pencerelerin üstünde kalır. Gözünüz kameradan fazla uzaklaşmadan metni okursunuz. Tek bir Swift/AppKit uygulamasıdır. Xcode projesi ya da başka bir bağımlılık gerektirmez.
+Prompter is built for reading a script while recording yourself on camera. The window opens at the top center of the screen, right below the webcam, and stays above every other window, so your eyes barely leave the lens while you read. It is a single Swift/AppKit app with no Xcode project and no dependencies.
 
-## Özellikler
+> The in-app interface is in Turkish. Everything is driven by the controls and the shortcuts listed below.
 
-- **Her zaman üstte**: Kameranın altında, bütün masaüstlerinde ve tam ekran uygulamaların üstünde görünür.
-- **Akıcı kaydırma**: Hız ayarlanabilir. Fare tekerleğiyle elle kaydırınca kaydırma bıraktığınız yerden devam eder.
-- **Ayar çubuğu**: Fareyi pencerenin üzerine getirince altta açılır. Buradan şunlar ayarlanır:
-  - arka plan rengi ve saydamlığı,
-  - yazı rengi ve boyutu,
-  - kaydırma hızı,
-  - başlat/durdur ve dosya aç düğmeleri.
-- **Yerinde düzenleme**: Metne tıklayınca imleç tıkladığınız yere gelir, doğrudan yazarsınız. Esc düzenlemeyi bitirir.
-- **Metin yükleme**: `⌘V` ile panodan yapıştırabilir ya da `⌘O` ile `.txt`/`.md` dosyası açabilirsiniz.
-- **Ayarlar kalıcı**: Metin, renkler, yazı boyutu, hız ve pencerenin yeri uygulamayı kapatıp açınca aynı kalır.
+## Features
 
-## Kurulum
+- **Always on top**: sits under the camera on every Space, including over full-screen apps.
+- **Smooth scrolling**: adjustable speed. If you scroll by hand with the trackpad or mouse wheel, playback continues from where you left off.
+- **Control bar**: appears at the bottom when you hover over the window. It controls:
+  - background color and opacity,
+  - text color and size,
+  - scroll speed,
+  - play/pause and open file.
+- **Inline editing**: click the text to start editing, with the caret placed where you clicked. Press `Esc` to finish.
+- **Loading text**: paste from the clipboard with `⌘V` or open a `.txt`/`.md` file with `⌘O`.
+- **Remembers everything**: the script, colors, text size, speed and window position are kept between launches.
 
-Gereksinimler: **macOS 13 veya üstü** ve Xcode Command Line Tools.
+## Installation
+
+Requirements: **macOS 13 or later** and the Xcode Command Line Tools.
 
 ```bash
-xcode-select --install          # Command Line Tools yüklü değilse
+xcode-select --install          # if the Command Line Tools are not installed yet
 
-git clone https://github.com/serbestonline/prompter.git
-cd prompter
-./build.sh --install            # derler ve ~/Applications altına kurar
+git clone https://github.com/serbestonline/Prompter.git
+cd Prompter
+./build.sh --install            # builds and installs to ~/Applications
 open ~/Applications/Prompter.app
 ```
 
-Sadece `./build.sh` çalıştırırsanız uygulama `build/Prompter.app` olarak derlenir, bir yere kurulmaz.
+Running `./build.sh` without flags only builds the app to `build/Prompter.app` and installs nothing.
 
-> Uygulama yerelde, Apple'a kayıtlı bir geliştirici imzası olmadan imzalanır. Derlenmiş `.app` dosyasını başka bir Mac'e taşırsanız ilk açılışta **sağ tık → Aç** demeniz gerekir.
+> The app is signed locally (ad-hoc), not with an Apple developer certificate. If you copy the built `.app` to another Mac, open it the first time with **right-click → Open**.
 
-## Kullanım
+## Usage
 
-| Tuş | İşlev |
+| Key | Action |
 |---|---|
-| `Space` | Başlat / durdur |
-| `↑` `↓` | Hızı artır / azalt |
-| `+` `−` | Yazıyı büyüt / küçült (Türkçe klavyede `*` da büyütür) |
-| `←` `→` | Birkaç satır geri / ileri |
-| `R` | Başa dön |
-| `Esc` | Durdur / düzenlemeyi bitir |
-| `⌘V` | Panodaki metni yükle (mevcut metnin yerine geçer) |
-| `⌘O` | Metin dosyası aç |
-| `⌘Q` | Çık |
+| `Space` | Play / pause |
+| `↑` `↓` | Increase / decrease speed |
+| `+` `−` | Larger / smaller text (`*` also enlarges on Turkish keyboards) |
+| `←` `→` | Jump a few lines back / forward |
+| `R` | Back to the top |
+| `Esc` | Pause / finish editing |
+| `⌘V` | Load text from the clipboard (replaces the current script) |
+| `⌘O` | Open a text file |
+| `⌘Q` | Quit |
 
-Pencereyi üst kenarından tutup taşıyabilir, kenarlarından çekip boyutunu değiştirebilirsiniz.
+Drag the window by its top edge to move it, and drag its edges to resize it.
 
-Tüm ayarları sıfırlamak için:
+To reset all settings:
 
 ```bash
 defaults delete com.serbest.prompter
 ```
 
-## Proje yapısı
+## Project structure
 
 ```text
 Sources/
-├── main.swift          # uygulama, pencere, kaydırma, klavye ve düzenleme
-├── ControlBar.swift    # fareyle açılan ayar çubuğu ve HoverView
-├── MainMenu.swift      # düzenleme kısayolları için Düzen menüsü
-└── ColorStore.swift    # renkleri UserDefaults'a yazar / okur
+├── main.swift          # app, window, scrolling, keyboard and editing
+├── ControlBar.swift    # hover control bar and HoverView
+├── MainMenu.swift      # Edit menu so copy/paste/undo work while editing
+└── ColorStore.swift    # saves and loads colors in UserDefaults
 scripts/
-└── make_icon.swift     # uygulama simgesini çizer (1024×1024 PNG)
+└── make_icon.swift     # draws the app icon (1024×1024 PNG)
 assets/
 └── icon.png
-build.sh                # derleme, simge üretme, imzalama, kurma
+build.sh                # build, icon generation, signing, install
 ```
 
-## Bilinen sorunlar
+## Known issues
 
-- Renk paneli açıkken uygulama kapatılırsa, macOS paneli bir sonraki açılışta geri getirir. Panel açık olduğu sürece ayar çubuğu gizlenmez. Paneli kapatınca düzelir.
+- If the app quits while the color panel is open, macOS restores the panel on the next launch, and the control bar stays visible until you close the panel.
 
-## Lisans
+## License
 
 [MIT](LICENSE)
