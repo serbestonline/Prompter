@@ -31,7 +31,20 @@ Kamerayla kayıt alırken metni okumak için yapıldı. Pencere ekranın üst or
 
 ## Kurulum
 
-Gereksinimler: **macOS 13 veya üstü** ve Xcode Command Line Tools.
+### İndirerek (önerilen)
+
+1. [Son sürüm sayfasından](https://github.com/serbestonline/Prompter/releases/latest) **`Prompter-<sürüm>.dmg`** dosyasını indirin.
+2. Dosyayı açın ve **Prompter**'ı **Applications** (Uygulamalar) klasörüne sürükleyin.
+3. Prompter'ı Uygulamalar klasöründen açın.
+
+**macOS 13 veya üstü** gerekir. Hem Apple Silicon hem Intel Mac'lerde doğrudan çalışır.
+
+> **İlk açılış:** Prompter Apple tarafından onaylanmadığı (notarize edilmediği) için macOS ilk açılışta uygulamayı doğrulayamadığını söyler. **Sistem Ayarları › Gizlilik ve Güvenlik** bölümünde aşağı kaydırıp **Yine de Aç**'a tıklayın. Bunu bir kez yapmanız yeterli.
+> Ya da Terminal'de karantina işaretini kaldırın: `xattr -dr com.apple.quarantine /Applications/Prompter.app`
+
+### Kaynaktan derleyerek
+
+Gereksinimler: macOS 13 veya üstü ve Xcode Command Line Tools.
 
 ```bash
 xcode-select --install          # Command Line Tools yüklü değilse
@@ -42,9 +55,13 @@ cd Prompter
 open ~/Applications/Prompter.app
 ```
 
-Sadece `./build.sh` çalıştırırsanız uygulama `build/Prompter.app` olarak derlenir, bir yere kurulmaz.
+| Komut | Sonuç |
+|---|---|
+| `./build.sh` | Apple Silicon + Intel için tek bir `build/Prompter.app` derler |
+| `./build.sh --install` | Ayrıca `~/Applications` altına kurar |
+| `./build.sh --dmg` | Ayrıca sürükle-bırak kurulumlu `build/Prompter-<sürüm>.dmg` üretir ([uv](https://docs.astral.sh/uv/) gerekir) |
 
-> Uygulama yerelde, Apple'a kayıtlı bir geliştirici imzası olmadan imzalanır. Derlenmiş `.app` dosyasını başka bir Mac'e taşırsanız ilk açılışta **sağ tık → Aç** demeniz gerekir.
+Sürüm numarası `build.sh` dosyasının başında tanımlı.
 
 ## Kullanım
 
@@ -77,10 +94,12 @@ Sources/
 ├── MainMenu.swift      # düzenleme kısayolları için Düzen menüsü
 └── ColorStore.swift    # renkleri UserDefaults'a yazar / okur
 scripts/
-└── make_icon.swift     # uygulama simgesini çizer (1024×1024 PNG)
+├── make_icon.swift             # uygulama simgesini çizer (1024×1024 PNG)
+├── make_dmg_background.swift   # DMG penceresinin arka planını çizer (1x + 2x)
+└── dmg_settings.py             # dmgbuild için DMG pencere düzeni
 assets/
 └── icon.png
-build.sh                # derleme, simge üretme, imzalama, kurma
+build.sh                        # derleme, simge, imzalama, kurma, DMG
 ```
 
 ## Bilinen sorunlar

@@ -33,7 +33,20 @@ Prompter is built for reading a script while recording yourself on camera. The w
 
 ## Installation
 
-Requirements: **macOS 13 or later** and the Xcode Command Line Tools.
+### Download (recommended)
+
+1. Download **`Prompter-<version>.dmg`** from the [latest release](https://github.com/serbestonline/Prompter/releases/latest).
+2. Open it and drag **Prompter** onto **Applications**.
+3. Launch Prompter from your Applications folder.
+
+Requires **macOS 13 or later**. Runs natively on both Apple Silicon and Intel Macs.
+
+> **First launch:** Prompter is not notarized by Apple, so the first time you open it macOS says it couldn't verify the app. Go to **System Settings › Privacy & Security**, scroll down and click **Open Anyway**. You only need to do this once.
+> Or remove the quarantine flag in Terminal instead: `xattr -dr com.apple.quarantine /Applications/Prompter.app`
+
+### Build from source
+
+Requirements: macOS 13 or later and the Xcode Command Line Tools.
 
 ```bash
 xcode-select --install          # if the Command Line Tools are not installed yet
@@ -44,9 +57,13 @@ cd Prompter
 open ~/Applications/Prompter.app
 ```
 
-Running `./build.sh` without flags only builds the app to `build/Prompter.app` and installs nothing.
+| Command | Result |
+|---|---|
+| `./build.sh` | Builds a universal `build/Prompter.app` (Apple Silicon + Intel) |
+| `./build.sh --install` | Also installs it to `~/Applications` |
+| `./build.sh --dmg` | Also creates the drag-to-install `build/Prompter-<version>.dmg` (requires [uv](https://docs.astral.sh/uv/)) |
 
-> The app is signed locally (ad-hoc), not with an Apple developer certificate. If you copy the built `.app` to another Mac, open it the first time with **right-click → Open**.
+The version number is set at the top of `build.sh`.
 
 ## Usage
 
@@ -79,10 +96,12 @@ Sources/
 ├── MainMenu.swift      # Edit menu so copy/paste/undo work while editing
 └── ColorStore.swift    # saves and loads colors in UserDefaults
 scripts/
-└── make_icon.swift     # draws the app icon (1024×1024 PNG)
+├── make_icon.swift             # draws the app icon (1024×1024 PNG)
+├── make_dmg_background.swift   # draws the DMG window background (1x + 2x)
+└── dmg_settings.py             # DMG window layout for dmgbuild
 assets/
 └── icon.png
-build.sh                # build, icon generation, signing, install
+build.sh                        # build, icon, signing, install, DMG
 ```
 
 ## Known issues
